@@ -11,9 +11,9 @@ podTemplate(cloud: 'local cluster', label: 'docker',
         container('docker') {
             checkout scm
 
-            stage('Deploy frontend') {
+            stage('Deploy Production') {
                 sh 'kubectl --namespace=production apply -f services/'
-                sh "kubectl --namespace=production apply -f ${params.DEPLOY_ENVIRONMENT}/"
+                sh "kubectl --namespace=production apply -f production/"
                 sh "echo http://`kubectl --namespace=production get service/inv-frontend --output=json | jq -r '.status.loadBalancer.ingress[0].ip'` > inv-frontend"
             }
         }
