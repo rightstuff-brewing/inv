@@ -12,14 +12,14 @@ podTemplate(cloud: 'local cluster', label: 'docker',
             checkout scm
             
             stage('Deploy Develop') {
-                sh 'kubectl --namespace=production apply -f services/'
-                sh "kubectl --namespace=production apply -f development/"
-                sh "echo http://`kubectl --namespace=production get service/inv-frontend --output=json | jq -r '.status.loadBalancer.ingress[0].ip'` > inv-frontend"
+                sh "kubectl --namespace=development apply -f development/"
+                sh 'kubectl --namespace=development apply -f services/'
+                sh "echo http://`kubectl --namespace=development get service/inv-frontend --output=json | jq -r '.status.loadBalancer.ingress[0].ip'` > inv-frontend"
             }
 
             stage('Deploy Production') {
-                sh 'kubectl --namespace=production apply -f services/'
                 sh "kubectl --namespace=production apply -f production/"
+                sh 'kubectl --namespace=production apply -f services/'
                 sh "echo http://`kubectl --namespace=production get service/inv-frontend --output=json | jq -r '.status.loadBalancer.ingress[0].ip'` > inv-frontend"
             }
         }
