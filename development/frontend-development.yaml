@@ -22,7 +22,7 @@ spec:
         imagePullPolicy: Always
         readinessProbe:
           httpGet:
-            path: /healthz
+            path: /
             port: 80
         command: []
         ports:
